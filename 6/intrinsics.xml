@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<intrinsic_matrix type_id="opencv-matrix">
+  <rows>3</rows>
+  <cols>3</cols>
+  <dt>d</dt>
+  <data>
+    8.4789785548152537e+01 0. 320. 0. 5.0606720334441877e+02 240. 0. 0.
+    1.</data></intrinsic_matrix>
+<distortion_coefficients type_id="opencv-matrix">
+  <rows>5</rows>
+  <cols>1</cols>
+  <dt>d</dt>
+  <data>
+    -1.0008342586927457e-01 6.2804107158690795e-03 0. 0.
+    -1.1243434385777786e-04</data></distortion_coefficients>
+<avg_reprojection_error>1.0424121330473599e+02</avg_reprojection_error>
+<per_view_reprojection_errors type_id="opencv-matrix">
+  <rows>13</rows>
+  <cols>1</cols>
+  <dt>f</dt>
+  <data>
+    8.65611725e+01 9.66691055e+01 1.18052483e+02 1.09712547e+02
+    1.13834579e+02 9.13533020e+01 8.57038345e+01 1.08172981e+02
+    9.29420624e+01 1.07422821e+02 1.10760864e+02 1.19922859e+02
+    1.06171471e+02</data></per_view_reprojection_errors>
+</opencv_storage>
