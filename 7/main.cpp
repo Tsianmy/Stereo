@@ -10,11 +10,18 @@ const float squareSize = 50.0;
 int main()
 {
 	FileStorage fs(input_path + "camera_data.xml", FileStorage::READ);
+	Size imgSize;
 	cv::Mat intrinsic_matrix, dist_coeffs;
+	fs["image_size"] >> imgSize;
 	fs["intrinsic_matrix"] >> intrinsic_matrix;
 	fs["distortion_coefficients"] >> dist_coeffs;
-	cout << "intrinsic matrix:\n" << intrinsic_matrix << endl
+	cout << "image size: " << imgSize << endl
+		 << "intrinsic matrix:\n" << intrinsic_matrix << endl
 		 << "distortion coefficients:\n" << dist_coeffs << endl;
+	Mat map1, map2;
+	initUndistortRectifyMap(intrinsic_matrix, dist_coeffs, Mat(),
+		intrinsic_matrix,
+		imgSize, CV_16SC2, map1, map2);
 	for (int id = 1; id <= imgnum; id++) {
 		// read
 		char buf[10];
@@ -27,11 +34,9 @@ int main()
 			cout << "No such file." << endl;
 			continue;
 		}
-		Mat rimg, map1, map2;
-		initUndistortRectifyMap(intrinsic_matrix, dist_coeffs, Mat(),
-			intrinsic_matrix,
-			img.size(), CV_16SC2, map1, map2);
+		Mat rimg;
 		remap(img, rimg, map1, map2, INTER_LINEAR, cv::BORDER_CONSTANT, cv::Scalar());
+		//undistort(img, rimg, intrinsic_matrix, dist_coeffs);
 		imwrite(output_path + "rleft" + buf + ".jpg", rimg);
 	}
 	return 0;
