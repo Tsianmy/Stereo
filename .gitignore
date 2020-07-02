@@ -361,3 +361,7 @@ FodyWeavers.xsd
 
 # props
 *props/
+
+# Solution
+*.sln
+*.vcxproj
