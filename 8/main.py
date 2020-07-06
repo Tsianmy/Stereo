@@ -21,6 +21,9 @@ def calibrate():
     print('get_distortion\n')
     k = get_distortion(intrinsics_param, extrinsics_param, pic_points, real_points_x_y)
 
+    print('old')
+    print(H, '\n', intrinsics_param, '\n', k, '\n', 0, '\n')
+    
     print('optimize\n')
     [new_intrinsics_param, new_k, new_extrinsics_param]  = refinall_all_param(intrinsics_param,
                                                             k, extrinsics_param, real_points, pic_points)
@@ -66,8 +69,8 @@ if __name__ == "__main__":
  
     cross_corners = [9, 6]
     real_coor = np.zeros((cross_corners[0] * cross_corners[1], 3), np.float32)
-    real_coor[:, :2] = np.mgrid[0:9, 0:6].T.reshape(-1, 2)
- 
+    real_coor[:, :2] = np.mgrid[0:9, 0:6].T.reshape(-1, 2) * 0.025
+    
     real_points = []
     real_points_x_y = []
     pic_points = []
@@ -91,7 +94,7 @@ if __name__ == "__main__":
     
     print("intrinsics_parm:\t", intrinsics_param)
     print("distortionk:\t", k)
-    print("extrinsics_parm:\t", extrinsics_param)
+    #print("extrinsics_parm:\t", extrinsics_param)
 
     ifud = False
     if ifud:

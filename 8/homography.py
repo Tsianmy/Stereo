@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import optimize as opt
- 
+
  
 def normalizing_input_data(coor_data):
     x_avg = np.mean(coor_data[:, 0])

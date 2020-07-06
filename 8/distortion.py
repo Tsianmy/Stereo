@@ -9,7 +9,7 @@ def get_distortion(intrinsic_param, extrinsic_param, pic_coor, real_coor):
  
             u = np.dot(np.dot(intrinsic_param, extrinsic_param[i]), single_coor)
             [u_estim, v_estim] = [u[0]/u[2], u[1]/u[2]]
- 
+            
             coor_norm = np.dot(extrinsic_param[i], single_coor)
             coor_norm /= coor_norm[-1]
  
@@ -22,7 +22,6 @@ def get_distortion(intrinsic_param, extrinsic_param, pic_coor, real_coor):
  
             d.append(pic_coor[i][j, 0] - u_estim)
             d.append(pic_coor[i][j, 1] - v_estim)
- 
     D = np.array(D)
     temp = np.dot(np.linalg.inv(np.dot(D.T, D)), D.T)
     k = np.dot(temp, d)
