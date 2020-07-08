@@ -5,6 +5,7 @@
 
 # my ignore
 8output/*.jpg
+backup/
 
 # User-specific files
 *.rsuser
