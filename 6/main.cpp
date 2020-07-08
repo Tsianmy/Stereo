@@ -30,7 +30,7 @@ int main()
 		// findChessboardCorners
 		Size patternSize(xnum, ynum);
 		vector<Point2f> corners;
-		bool found = findChessboardCorners(imgGray, patternSize, corners, CALIB_CB_ADAPTIVE_THRESH);
+		bool found = findChessboardCorners(imgGray, patternSize, corners);
 		if (found) {
 			cout << "Found corners." << endl;
 			cornerSubPix(imgGray, corners, Size(11, 11), Size(-1, -1), TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 30, 0.1));

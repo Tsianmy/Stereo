@@ -29,11 +29,15 @@
 
 The codes of this project are here: \href{https://github.com/Tsianmy/Stereo}{Github}, URL: \url{https://github.com/Tsianmy/Stereo}.
 
-%%%%%%%%%%%%%% Camera Basics
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Camera Basics
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Camera Basics}
 \begin{enumerate}
 
-%%%%%%%%%%%%%% 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item From Wikipedia, we know that \textbf{intrinsics} of a camera can be represented by a matrix $K$ \cite{ref1}, 
 
 $$
@@ -53,14 +57,18 @@ $R, t$ are the \textbf{extrinsics} which denote the coordinate system transforma
 
 Finally, the \textbf{camera matrix} is $M = K \begin{bmatrix} R \quad t \end{bmatrix}$.
 
-%%%%%%%%%%%%%% 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item Suppose that the coordinates in the image plane is $\boldsymbol X' = \begin{bmatrix} u \\ v \\ 1 \end{bmatrix}$, then
 
 $$
 \boldsymbol X' = \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} = \frac 1Z K(R\boldsymbol X + t) = \frac 1Z \begin{bmatrix} f_x & 0 & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} R \quad t \end{bmatrix} \begin{bmatrix} X_1 \\ X_2 \\ X_3 \\ 1 \end{bmatrix}.
 $$
 
-%%%%%%%%%%%%%% 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item A 2D image point correspond to a line in the 3D camera coordinate because its depth is unknown. 
 
 The point is with coordinates $\boldsymbol P_{uv} = \begin{bmatrix} u \\ v \end{bmatrix}$ in 2D coordinate and $\boldsymbol P_c = \begin{bmatrix} X \\ Y \\ Z \end{bmatrix}$ in camera coordinate. We have equation
@@ -85,7 +93,9 @@ Z = \lambda
 
 And it is a a line in the 3D camera coordinate.
 
-%%%%%%%%%%%%%% 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item \textbf{Distortion} is a deviation from rectilinear projection; a projection in which straight lines in a scene remain straight in an image; It is a form of optical aberration \cite{ref4}. The OpenCV document indicates that there are two kinds of distortion, radial distortion and tangential distortion \cite{ref5}.
 
 For radial distortion model, the actual projected point is related to the ideal point by a radial displacement,
@@ -94,7 +104,7 @@ $$
 $$
 where  $\boldsymbol X_u$ is the ideal image position, $\boldsymbol X_d$ is the distorted position, $r$ is the radial distance $\sqrt{x_u^2 + y_u^2}$ and  $L(r)$ is a distortion factor; An approximation to an arbitrary function $L(r)$ may be given by a Taylor expansion $L(r) = 1 + k_1r + k_2r^2 + k_3r^3 + ...$ \cite{ref6}.
 
-Many articles pointed out that tangential distortion is minimally characterized by two additional parameters: $p_1$ and $p_2$ \cite{ref5}\cite{ref7}, but the authors didn't explain why the equation could be used to approximate. Wikipedia lists some of researcher's work and I skim through the paper which was written by D.C.Brown. For tangential distortion, D.C.Brown recasted the extended expressions for Conrady's model into the form,
+Many articles pointed out that tangential distortion is minimally characterized by two additional parameters: $p_1$ and $p_2$ \cite{ref5}\cite{ref7}, but the authors didn't explain why the equation could be used to approximate. Wikipedia lists some of researcher's work and I skimmed through the paper which was written by D.C.Brown. For tangential distortion, D.C.Brown recasted the extended expressions for Conrady's model into the form,
 $$\Delta_x = [P_1(r^2 + 2x^2) + 2P_2xy][1 + P_3r^2 + P4r^2 + ...]$$
 $$\Delta_y = [2P_1xy + P_2(r^2 + 2y^2)][1 + P_3r^2 + P4r^2 + ...].$$ \cite{ref8}
 
@@ -128,7 +138,9 @@ u_{undistorted} = f_xx_{distorted} + c_x \\
 v_{undistorted} = f_yy_{distorted} + c_y
 \end{cases}.$$
 
-%%%%%%%%%%%%%% 5
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 5
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item From my point of view, \textbf{camera calibration} is to find the intrinsics and extrinsics of a camera with distortion if it is considered.
 
 It is said on Wikipedia that camera calibration is the process of estimating the parameters of a camera model approximating the camera that produced a given photograph or video, many people restrict the term camera calibration for the estimation of internal or intrinsic parameters only \cite{ref1}.
@@ -137,7 +149,9 @@ Similarly, it is said in the book "Learning OpenCV 3" that the process of camera
 
 Many algorithms are developed to caculate the parameters.
 
-%%%%%%%%%%%%%% 6
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 6
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item The opencv calibration document lists the APIs and opencv tutorials show the steps of calibration as well as the opencv book \cite{ref9}\cite{ref10}.
 \begin{itemize}
   \item First of all, read the image and use function \verb|cv::findChessboardCorners()| to locate the corners of the chessboard.
@@ -158,7 +172,7 @@ The result indicates that chessboard corners can be found well(Figure 6-1), but 
 	\centering
 	\begin{tabular}{ccc|cc}
 		\toprule[2pt]
-		\multicolumn{3}{c|}{intrinsics} & \multicolumn{2}{c}{distortion coefficients($k_1, k_2, k_3, p_1, p_2$)} \\ \hline
+		\multicolumn{3}{c|}{intrinsics} & \multicolumn{2}{c}{distortion coefficients($k_1, k_2, p_1, p_2, k_3$)} \\ \hline
 		102.67     & 0         & 320    & -0.029448            & 2.691e-05            \\
 		0          & 385.38    & 240    & 0                    & 0                    \\
 		0          & 0         & 1      & 1.019e-07            &                      \\
@@ -166,7 +180,9 @@ The result indicates that chessboard corners can be found well(Figure 6-1), but 
 	\end{tabular}
 \end{table}
 
-%%%%%%%%%%%%%% 7
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 7
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item For undistortion, I use function \verb|cv::initUndistortRectifyMap()| to compute the undistortion maps and function \verb|cv::remap()| to apply them to the images.
 
 However, the result dosn't seem satisfying(see Figure 7-1). I find out that the images are from sample of opencv and there is a certain amount of error between the parameters. I try to use the parameters of sample to undistort the image and the result is in Figure 7-2. It indicates that the undistortion was perfect. 
@@ -199,7 +215,7 @@ And the latest parameters are in Table 7-1. The average projection error is $\te
 	\centering
 	\begin{tabular}{ccc|cc}
 		\toprule[2pt]
-		\multicolumn{3}{c|}{intrinsics} & \multicolumn{2}{c}{distortion coefficients($k_1, k_2, k_3, p_1, p_2$)} \\ \hline
+		\multicolumn{3}{c|}{intrinsics} & \multicolumn{2}{c}{distortion coefficients($k_1, k_2, p_1, p_2, k_3$)} \\ \hline
 		535.89     & 0         & 342.29    & -0.2662           & -3.968e-02           \\
 		0          & 535.84    & 235.52    & 1.794e-03         & -2.988e-04           \\
 		0          & 0         & 1     		 & 2.401e-01         &                      \\
@@ -207,15 +223,17 @@ And the latest parameters are in Table 7-1. The average projection error is $\te
 	\end{tabular}
 \end{table}
 
-%%%%%%%%%%%%%% 8
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 8
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item Zhang's method can be summarized in mainly 6 steps \cite{ref11}.
 \begin{itemize}
-\item Capture images for diffrent perspective and detect corners.
-\item Solve $\tilde{m} = H \tilde{M}$ for each image, where $\tilde{m}$ is a 2D point, $\tilde{M}$ is a 3D point and homography $H = A[r1 \; r2\; t]$.
-\item Solve equation $vb = 0$ to get $B$ and get intrinsics by decomping $B$.
-\item Calculate extrinsic matrix $[R t]$.
-\item Solve $Dk = d$ to get distortion parameters.
-\item Optimize the parameters by Levenberg-Marquardt Algorithm.
+	\item Capture images for diffrent perspective and detect corners.
+	\item Solve $\widetilde{m} = H \widetilde{M}$ for each image, where $\widetilde{m}$ is a 2D point, $\widetilde{M}$ is a 3D point and homography $H = A[r1 \; r2\; t]$.
+	\item Solve equation $vb = 0$ to get $B$ and get intrinsics by decomping $B$.
+	\item Calculate extrinsic matrix $[R \; t]$.
+	\item Solve $Dk = d$ to get distortion parameters.
+	\item Optimize the parameters by Levenberg-Marquardt Algorithm.
 \end{itemize}
 
 The codes are referenced to Eating Lee's blog \cite{ref12} and the parameters are in Table 8-1.
@@ -239,13 +257,18 @@ The average projection error is $\textbf{3.05258}$ and it's less precise than th
 
 %%%%%%%%%%%%%%
 As the derivation of Problem 3, it's hard to estimate the depth of the pixels with a single camera and a single image. But there exist some methods to estimate depth such as estimating objects with handicraft. The better way is using two cameras to estimate depth.
+%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%% Binocular Basics
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Binocular Basics
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Binocular Basics}
 
 \begin{enumerate}[resume]
 
-%%%%%%%%%%%%%% 9
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 9
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item Becausethe 3D world coordinate is aligned with the 3D camera coordinate of the left camera, the projection in left plane is
 $$
 \boldsymbol{X'_l} = \frac{1}{X_3} M_l \boldsymbol{X} = \frac{1}{X_3} \begin{bmatrix} \frac{X_1 - c_x}{f_x} \\ \frac{X_2 - c_y}{f_y} \\ X_3 \end{bmatrix} ,
@@ -256,7 +279,9 @@ $$
 \boldsymbol{X'_r} = \frac{1}{X_3} M_r [R \quad t] \boldsymbol{X} = \frac{1}{X_3} M_r [R \quad t] \begin{bmatrix} X_1 \\ X_2 \\ X_3 \\ 1 \end{bmatrix} .
 $$
 
-%%%%%%%%%%%%%% 10
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 10
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item Figure 10-1 shows the projection of points and the derivation is referenced to an article \cite{ref13}. Let $x_l = \begin{bmatrix} u & v \end{bmatrix}^\mathrm T$, then 3D point's world coordinate is
 $$
 \boldsymbol X = s_lM_l^{-1}x_l .
@@ -300,30 +325,50 @@ The equation means $x_r$ lies on the line $l = M_r^{-\mathrm T} t \times R M_l^{
 	\caption*{Figure 10-1. Geometry of stereo imaging.}
 \end{figure}
 
-%%%%%%%%%%%%%% 11
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 11
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item Similar to Problem 10, if we switch $x_l$ and $x_r$ and consider $M_r^{-\mathrm T} t \times R M_l^{-1}$ as $F$ , we get $x_l^\mathrm T F x_r = 0$. Book \emph{Learning OpenCV 3} derives from another perspective \cite{ref9}.
 
-The three points are in the same plane, so
+Let $p_l = M_l^{-1}x_l, p_r = M_r^{-1}x_r$. The three points are in the same plane, so
 $$
-(x_l - t)^\mathrm T (t \times x_l) = 0 .
+(p_l - t)^\mathrm T (t \times p_l) = 0 .
 $$
 
-Rewrite $x_r = R(x_l - t)$ as $x_l - t = R^{-1}x_r$ and use $R^{-1} = R^\mathrm T$,
+Rewrite $p_r = R(p_l - t)$ as $p_l - t = R^{-1}p_r$ and use $R^{-1} = R^\mathrm T$,
 $$
-(R^\mathrm T \cdot x_r)^\mathrm T (t \times x_l) = 0 .
+(R^\mathrm T \cdot p_r)^\mathrm T (t \times p_l) = 0 .
 $$
 
 Define a skew-symmetrix matrix $S$ and rewrite the cross-product,
 $$
-t \times x_l = S \cdot x_l .
+t \times p_l = S \cdot p_l \Rightarrow S = \begin{bmatrix} 0 & -T_x & T_y \\ T_z & 0 & -T_x \\ -T_y & T_x & 0 \end{bmatrix}.
 $$
 
 Hense,
 $$
-x_r^\mathrm T \cdot R \cdot S \cdot x_l = x_r^\mathrm T \cdot F \cdot x_l = 0.
+p_r^\mathrm T \cdot R \cdot S \cdot p_l = x_r^\mathrm T M_r^{-\mathrm T} R  S M_l^{-1} x_l = x_r^\mathrm T F x_l = 0.
 $$
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 12
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item From moverzp's blog, the parameters needed to calitrate are intrinsic matrix, extrinsic matrix, fundamental matrix and distortion coefficients \cite{ref14}. I decide to follow these steps:
+\begin{itemize}
+	\item Calculate intrinsics, extrinsics and distortion coefficients of two cameras through methods in above problems.
+	\item Calculate the transform $(R | t)$ between the left and the right cameras which is determined by 
+	$$
+		\begin{cases}
+		R = R_rR_l^\mathrm T \\
+		T = T_r - RT_l^\mathrm T
+		\end{cases}.
+	$$
+	\item Calculate essential matrix and fundamental matrix.
+\end{itemize}
 
+The first problem I met was that the corners in some of images produced by the right camera just couldn't be detected. After refering to OpenCV ducument, I added a flag to the funtion of the function and it worked. Before detecting, it would normalize the image gamma with equalizeHist.
+
+The second problem was how to get the transform $(R | t)$. Each pair of images could generate left and right extrinsic matrices which detemined one transform.
 \end{enumerate}
 
 \printbibliography[

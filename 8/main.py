@@ -21,8 +21,8 @@ def calibrate():
     print('get_distortion\n')
     k = get_distortion(intrinsics_param, extrinsics_param, pic_points, real_points_x_y)
 
-    print('old')
-    print(H, '\n', intrinsics_param, '\n', k, '\n', 0, '\n')
+    #print('old')
+    #print(H, '\n', intrinsics_param, '\n', k, '\n', 0, '\n')
     
     print('optimize\n')
     [new_intrinsics_param, new_k, new_extrinsics_param]  = refinall_all_param(intrinsics_param,
@@ -43,23 +43,7 @@ def undistort(file_dir, intrinsics_param, k):
         shp = pic_data.shape
         newcameramtx, roi = cv.getOptimalNewCameraMatrix(intrinsics_param,k,(shp[0],shp[1]),0,(shp[0],shp[1]))
         pic_undist = cv.undistort(pic_data, intrinsics_param, k, None, newcameramtx)
-##        alpha = intrinsics_param[0, 0]
-##        beta = intrinsics_param[1, 1]
-##        uc = intrinsics_param[0, 2]
-##        vc = intrinsics_param[1, 2]
-##        for v in range(shp[0]):
-##            for u in range(shp[1]):
-##                x = (u - uc) / alpha
-##                y = (v - vc) / beta
-##                r = x * x + y * y
-##                x_dist = x * (1 + k[0] * r + k[1] * r * r)
-##                y_dist = y * (1 + k[0] * r + k[1] * r * r)
-##                u_dist = alpha * x_dist + uc
-##                v_dist = beta * y_dist + vc
-##                if 0 <= u_dist < shp[1] and 0 <= v_dist < shp[0]:
-##                    pic_undist[v, u] = pic_data[int(v_dist), int(u_dist)]
-##                else:
-##                    pic_undist[v, u] = 0
+
         cv.imwrite(out_path + 'r' + pic, pic_undist)
  
  
